@@ -71,12 +71,236 @@
                 </div>
             </div>
             <div class="flex-1 flex justify-center mt-16 md:mt-0">
+                <!-- Commented out hero-stack for testing
                 <div id="hero-stack" class="hero-stack w-64 h-96 md:w-80 md:h-[500px]" aria-hidden="true">
-                    <div class="hero-card" style="background-image:url('images\musikafton hötorget.jpg')"></div>
-                    <div class="hero-card" style="background-image:url('images\stockholm AI högtorget.jpeg')"></div>
+                    <div class="hero-card" style="background-image:url('images/musikafton hötorget.jpg')"></div>
+                    <div class="hero-card" style="background-image:url('images/stockholm AI högtorget.jpeg')"></div>
                     <div class="hero-card" style="background-image:url('images/aws poster.jpeg')"></div>
-                    <div class="hero-card" style="background-image:url('images/evenemäng at närkesgatan.jpg')"></div>
+                    <div class="hero-card" style="background-image:url('images/evenemäng at närkesgatan.jpeg')"></div>
                     <div class="hero-card" style="background-image:url('images/greg closeup lecture.jpg')"></div>
+                    <div class="hero-card" style="background-image:url('images/Mai interior nov 15.jpg')"></div>
+                    <div class="hero-card" style="background-image:url('images/Bob lecture.jpg')"></div>
+                    <div class="hero-card" style="background-image:url('images/Greg lecturing in museum foto credit Max Bjorverud.jpg')"></div>
+                    <div class="hero-card" style="background-image:url('images/exterior skrapan.jpg')"></div>
+                    <div class="hero-card" style="background-image:url('images/interior skrappan.jpg')"></div>
+                    <div class="hero-card" style="background-image:url('images/invigning skrapan.jpeg')"></div>
+                </div>
+                -->
+                
+                <!-- Test rotating circles -->
+                <div id="test-circle" class="w-[640px] h-[640px] rounded-full relative">
+                    <!-- Base rotating circle with gradient -->
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-600 via-purple-500 to-indigo-600 test-rotation"></div>
+                    
+                    <!-- Counter-rotating circle with rectangles -->
+                    <div class="absolute inset-0 rounded-full test-counter-rotation">
+                        <!-- Rectangle 1 (0°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(0deg);">
+                            <div class="image-container" id="img-container-1">
+                                <img src="images/Greg lecturing in museum foto credit Max Bjorverud.jpg" 
+                                     onload="setupImage(this)"
+                                     alt="Greg lecturing">
+                            </div>
+                        </div>
+                        
+                        <script>
+                            function setupImage(img) {
+                                const container = img.closest('.image-container');
+                                const viewportRatio = 320/480; // 2:3
+                                
+                                // Wait for image to load to get proper dimensions
+                                if (!img.complete) {
+                                    img.onload = () => setupImage(img);
+                                    return;
+                                }
+                                
+                                const imageRatio = img.naturalWidth / img.naturalHeight;
+                                
+                                if (Math.abs(imageRatio - viewportRatio) < 0.1) {
+                                    // Image matches 2:3 ratio (with some tolerance)
+                                    container.classList.add('ratio-match');
+                                } else if (imageRatio > viewportRatio) {
+                                    // Image is wider than 2:3
+                                    container.classList.add('wide');
+                                    
+                                    // Calculate pan distance based on image dimensions
+                                    const viewportWidth = 320;
+                                    const scaledImageWidth = (img.naturalWidth * 480) / img.naturalHeight;
+                                    const panDistance = -(scaledImageWidth - viewportWidth);
+                                    
+                                    // Set custom property for pan distance
+                                    container.style.setProperty('--pan-distance', `${panDistance}px`);
+                                }
+                            }
+                        </script>
+                        
+                        <!-- Rectangle 2 (25.71°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(25.71deg);">
+                            <div class="image-container" id="img-container-2">
+                                <img src="images/Mai interior nov 15.jpg" 
+                                     onload="setupImage(this)"
+                                     alt="MAI Interior">
+                            </div>
+                        </div>
+                        
+                        <!-- Rectangle 3 (51.43°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(51.43deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">3</div>
+                        </div>
+                        
+                        <!-- Rectangle 4 (77.14°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(77.14deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">4</div>
+                        </div>
+                        
+                        <!-- Rectangle 5 (102.86°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(102.86deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">5</div>
+                        </div>
+                        
+                        <!-- Rectangle 6 (128.57°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(128.57deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">6</div>
+                        </div>
+                        
+                        <!-- Rectangle 7 (154.29°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(154.29deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">7</div>
+                        </div>
+                        
+                        <!-- Rectangle 8 (180°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(180deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">8</div>
+                        </div>
+                        
+                        <!-- Rectangle 9 (205.71°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(205.71deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">9</div>
+                        </div>
+                        
+                        <!-- Rectangle 10 (231.43°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(231.43deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">10</div>
+                        </div>
+                        
+                        <!-- Rectangle 10 (257.14°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(257.14deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">10</div>
+                        </div>
+
+                        <!-- Rectangle 11 (282.86°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(282.86deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">11</div>
+                        </div>
+
+                        <!-- Rectangle 12 (308.57°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(308.57deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">12</div>
+                        </div>
+
+                        <!-- Rectangle 13 (334.29°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(334.29deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">13</div>
+                        </div>
+
+                        <!-- Rectangle 14 (360°) -->
+                        <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(360deg);">
+                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">14</div>
+                        </div>
+                        
+                        <script>
+                            // Function to update rectangle prominence based on rotation
+                            function updateRectangleProminence() {
+                                const containers = document.querySelectorAll('.rectangle-container');
+                                const numRectangles = containers.length;
+                                
+                                // Update the CSS variable for animation duration
+                                document.documentElement.style.setProperty('--num-rectangles', numRectangles);
+                                
+                                // Calculate angles based on number of rectangles
+                                const fullArc = 360 / numRectangles;           // Total arc per rectangle
+                                const maxAngle = fullArc / 2;                  // Half of full arc
+                                const animStartAngle = maxAngle + 8;           // Start animations before visibility
+                                const fadeStartAngle = maxAngle - 4;           // Start fade
+                                const fullInvisibleAngle = maxAngle + 4;       // Full invisible
+                                
+                                containers.forEach((container, index) => {
+                                    // Get the rotation angle of the parent counter-rotating circle
+                                    const matrix = getComputedStyle(container.parentElement).transform;
+                                    let angle = 0;
+                                    if (matrix !== 'none') {
+                                        const values = matrix.split('(')[1].split(')')[0].split(',');
+                                        angle = Math.round(Math.atan2(values[1], values[0]) * (180/Math.PI));
+                                    }
+                                    
+                                    // Calculate total angle and normalize to -180 to +180 range
+                                    const baseRotation = index * (360 / numRectangles);
+                                    let totalAngle = (angle + baseRotation) % 360;
+                                    if (totalAngle > 180) totalAngle -= 360;
+                                    
+                                    const absAngle = Math.abs(totalAngle);
+                                    const imageContainer = container.querySelector('.image-container');
+                                    
+                                    // Handle animations and visibility
+                                    if (absAngle >= fullInvisibleAngle) {
+                                        // Completely invisible
+                                        container.style.opacity = '0';
+                                        container.classList.remove('top-layer');
+                                        imageContainer?.classList.remove('animate');
+                                    } else if (absAngle <= fadeStartAngle) {
+                                        // Fully visible core zone
+                                        container.style.opacity = '1';
+                                        container.classList.add('top-layer');
+                                        imageContainer?.classList.add('animate');
+                                    } else {
+                                        // Transition zone
+                                        const fadeRange = fullInvisibleAngle - fadeStartAngle;
+                                        const fadeProgress = (fullInvisibleAngle - absAngle) / fadeRange;
+                                        container.style.opacity = fadeProgress.toString();
+                                        container.classList.add('top-layer');
+                                        
+                                        // Handle animation transition
+                                        if (absAngle <= animStartAngle) {
+                                            imageContainer?.classList.add('animate');
+                                        } else {
+                                            imageContainer?.classList.remove('animate');
+                                        }
+                                    }
+                                    
+                                    // Adjust pan speed for wide images based on image width
+                                    const img = container.querySelector('img');
+                                    if (img && imageContainer?.classList.contains('wide')) {
+                                        const imgWidth = img.naturalWidth;
+                                        const viewportWidth = container.clientWidth;
+                                        const panDistance = imgWidth - viewportWidth;
+                                        const timeAtTop = (fadeStartAngle * 2) / 360 * (numRectangles * 6); // seconds at top
+                                        const transitionDuration = timeAtTop * 1.5; // 1.5x to account for early start/late end
+                                        img.style.transition = `transform ${transitionDuration}s linear`;
+                                    }
+                                });
+                                
+                                requestAnimationFrame(updateRectangleProminence);
+                            }
+                            
+                            // Start the animation loop
+                            updateRectangleProminence();
+                        </script>
+                    </div>
                 </div>
             </div>
         </div>

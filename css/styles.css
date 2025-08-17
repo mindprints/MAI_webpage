@@ -122,17 +122,99 @@ body {
     }
 }
 
-/* Hero card stack */
-.hero-stack { position: relative; }
+/* Test rotation */
+@keyframes clockRotation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes counterClockRotation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+.test-rotation {
+    animation: clockRotation 20s linear infinite;
+    will-change: transform;
+}
+
+.test-counter-rotation {
+    /* For 10 rectangles: 10 * 6 = 60 seconds (adjust the multiplier as needed) */
+    animation: counterClockRotation calc(var(--num-rectangles, 10) * 6s) linear infinite;
+    will-change: transform;
+}
+
+.rectangle-container {
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.rectangle-container.top-layer {
+    z-index: 10;
+}
+
+.image-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* For 2:3 ratio images */
+.image-container.ratio-match img {
+    transition: transform 4s ease-in-out;
+    transform-origin: center center;
+    transform: scale(1);
+}
+
+.image-container.ratio-match.animate img {
+    transform: scale(1.15);
+}
+
+/* For wide images */
+.image-container.wide img {
+    width: auto;
+    height: 100%;
+    transform: translateX(0);
+    transition: transform 8s linear;
+}
+
+.image-container.wide.animate img {
+    transform: translateX(var(--pan-distance, -20%));
+}
+
+/* Hero card stack - temporarily disabled */
+/* .hero-stack { 
+    position: relative;
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    will-change: transform;
+} */
 .hero-card {
-    position: absolute; inset: 0;
+    position: absolute;
+    inset: 0;
     border-radius: 16px;
-    background-size: cover; 
+    background-size: cover;
     background-position: center;
     border: 1px solid rgba(148,163,184,0.25);
     box-shadow: 0 8px 32px rgba(2,8,20,0.35);
-    transition: transform .8s cubic-bezier(.22,.74,.28,1), filter .6s ease, box-shadow .8s ease;
-    will-change: transform, filter;
+    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 1s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center center;
+    will-change: transform, filter, opacity;
+    opacity: 0.95;
 }
 .hero-card::after { 
     content: ""; 
@@ -140,8 +222,43 @@ body {
     inset: 0; 
     border-radius: inherit; 
     pointer-events: none;
-    background: linear-gradient(to bottom right, rgba(2,6,23,.25), rgba(30,58,138,.20));
+    background: linear-gradient(to bottom right, rgba(2,6,23,0.3), rgba(30,58,138,0.25));
+    opacity: 0.8;
+    transition: opacity 0.6s ease;
 }
 .hero-card.active { 
-    box-shadow: 0 20px 60px rgba(2,8,20,.6); 
+    box-shadow: 0 20px 60px rgba(2,8,20,0.6);
+    opacity: 1;
+}
+.hero-card.active::after {
+    opacity: 0.4;
+}
+
+/* Base styles for all hero cards */
+.hero-card {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Zoom animation for portrait images */
+.hero-card.active.zoom-animation {
+    animation: zoomEffect 5s ease-in-out infinite;
+}
+
+@keyframes zoomEffect {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Pan animation for landscape images */
+.hero-card.active.pan-animation {
+    animation: panEffect 12s linear infinite;
+    background-size: auto 100%;
+    background-position: left center;
+}
+
+@keyframes panEffect {
+    from { background-position: left center; }
+    to { background-position: right center; }
 }
