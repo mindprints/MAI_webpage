@@ -22,27 +22,143 @@ function toggleMobileMenu() {
     let activeIndex = 0;
     let isAnimating = false;
     const len = cards.length;
-    const ANIMATION_DURATION = 800; // Match CSS transition duration
+    const ANIMATION_DURATION = 1200; // Match CSS transition duration
+    const VIEW_RATIO = 500/320; // md:h-[500px] / md:w-80 from the HTML
+
+    // Store image dimensions and calculate animations
+    const cardAnimations = new Map();
+
+    // Preload images and calculate their dimensions
+    cards.forEach(card => {
+        const bgImage = card.style.backgroundImage.replace(/url\(['"](.+)['"]\)/, '$1');
+        const img = new Image();
+        img.onload = () => {
+            const ratio = img.height / img.width;
+            const isPortrait = ratio >= VIEW_RATIO;
+            
+            let animation;
+            if (isPortrait) {
+                // For portrait images, create a zoom effect
+                animation = { type: 'zoom' };
+            } else {
+                // For landscape images, create a pan effect
+                animation = { type: 'pan' };
+            }
+            cardAnimations.set(card, animation);
+        };
+        img.src = bgImage;
+    });
 
     function layout(){
         if (isAnimating) return;
         isAnimating = true;
+
+        // Calculate the rotation of the active card
+        const activeCardIdx = activeIndex;
+        const activeCardPosition = cards[activeCardIdx].dataset.initialPosition || activeCardIdx;
+        const baseAngle = Math.max(3, Math.min(12, 15 - len * 0.5));
+        const activeCardRotation = (activeCardPosition - Math.floor(len/2)) * baseAngle;
+        
+        // If we haven't started the animation loop yet, start it
+        if (!stack.dataset.animating) {
+            stack.dataset.animating = 'true';
+            let lastTimestamp = 0;
+            let stackRotation = 0;
+            const ROTATION_PERIOD = 10000; // 10 seconds for full rotation
+            const CARD_SHOW_ANGLE = 30;    // 1 o'clock position (30 degrees)
+            const CARD_HIDE_ANGLE = 330;   // 11 o'clock position (330 degrees)
+            const CARDS_PER_ROTATION = len;
+            
+            function animate(timestamp) {
+                if (!stack.dataset.animating) return;
+                
+                if (!lastTimestamp) lastTimestamp = timestamp;
+                const deltaTime = timestamp - lastTimestamp;
+                lastTimestamp = timestamp;
+                
+                // Calculate stack rotation (clockwise)
+                const rotationSpeed = 360 / ROTATION_PERIOD; // degrees per millisecond
+                stackRotation = (timestamp % ROTATION_PERIOD) * rotationSpeed;
+                
+                // Calculate which card should be active based on rotation
+                const newActiveIndex = Math.floor((stackRotation / 360) * CARDS_PER_ROTATION) % len;
+                if (newActiveIndex !== activeIndex) {
+                    activeIndex = newActiveIndex;
+                }
+                
+                // Apply stack rotation
+                stack.style.transform = `rotate(${stackRotation}deg)`;
+                
+                // Update each card's counter-rotation
+                cards.forEach((card, idx) => {
+                    // Calculate card's position in rotation cycle
+                    const cardAngle = ((idx - activeIndex + len) % len) * (360 / len);
+                    const counterRotation = -stackRotation; // Counter-rotate to maintain orientation
+                    
+                    // Apply counter-rotation and any additional transforms
+                    card.style.transform = `
+                        rotate(${counterRotation}deg)
+                        translateY(${idx === activeIndex ? 0 : 8}px)
+                        scale(${idx === activeIndex ? 1 : 0.95})
+                    `;
+                    
+                    // Update visibility/active state
+                    const isVisible = cardAngle >= CARD_SHOW_ANGLE && cardAngle <= CARD_HIDE_ANGLE;
+                    card.style.opacity = isVisible ? '1' : '0';
+                    card.classList.toggle('active', idx === activeIndex);
+                });
+                
+                // Apply the rotation
+                stack.style.transform = `rotate(${currentAngle}deg)`;
+                
+                requestAnimationFrame(animate);
+            }
+            
+            requestAnimationFrame(animate);
+        }
         
         cards.forEach((card, idx) => {
+            // Store initial position for reference
+            if (!card.dataset.initialPosition) {
+                card.dataset.initialPosition = idx;
+            }
             const order = (idx - activeIndex + len) % len; // 0 is front
-            const rotate = (order - Math.floor(len/2)) * 4; // Reduced rotation
-            const translateZ = -order * 20; // Add depth
+            // Calculate initial position in stack (0 to len-1)
+            const initialPosition = idx;
+            // Calculate base rotation from initial position
+            // Adjust fan rotation based on number of cards
+            const baseAngle = Math.max(3, Math.min(12, 15 - len * 0.5)); // Reduce angle as cards increase
+            const baseRotation = (initialPosition - Math.floor(len/2)) * baseAngle;
+            // Add extra fan-out based on current order
+            const fanRotation = baseRotation + (order * 3); // Progressive rotation
+            const translateZ = -order * 15; // Depth effect
             const translateY = order * 8;
             const scale = Math.max(1 - (order * 0.05), 0.9); // Progressive scale reduction
             
             card.style.zIndex = String(10 + (len - order));
-            card.style.transform = `
+            // Get the animation for this card
+            const animation = cardAnimations.get(card);
+            let transform = `
                 translateY(${translateY}px) 
                 translateZ(${translateZ}px) 
-                rotateX(${rotate/2}deg) 
-                rotateY(${rotate}deg) 
+                rotate(${fanRotation}deg) 
                 scale(${scale})
             `;
+
+            // Handle animations only for active card
+            if (order === 0 && animation) {
+                // Add animation class based on type
+                if (animation.type === 'zoom') {
+                    card.classList.add('zoom-animation');
+                } else if (animation.type === 'pan') {
+                    card.classList.add('pan-animation');
+                }
+            } else {
+                // Remove all animations for non-active cards
+                card.classList.remove('zoom-animation', 'pan-animation');
+            }
+            
+            card.style.transform = transform;
             card.style.filter = order === 0 ? 'none' : `brightness(${1 - order * 0.1}) blur(${order * 0.5}px)`;
             card.classList.toggle('active', order === 0);
         });

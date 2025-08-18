@@ -94,9 +94,9 @@
                     
                     <!-- Counter-rotating circle with rectangles -->
                     <div class="absolute inset-0 rounded-full test-counter-rotation">
-                        <!-- Rectangle 1 (0°) -->
+                        <!-- Rectangle 1 (25.71°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
-                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(0deg);">
+                             style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(25.71deg);">
                             <div class="image-container" id="img-container-1">
                                 <img src="images/Greg lecturing in museum foto credit Max Bjorverud.jpg" 
                                      onload="setupImage(this)"
@@ -105,9 +105,11 @@
                         </div>
                         
                         <script>
-                            function setupImage(img) {
+                                                            function setupImage(img) {
                                 const container = img.closest('.image-container');
                                 const viewportRatio = 320/480; // 2:3
+                                const viewportWidth = 320;
+                                const viewportHeight = 480;
                                 
                                 // Wait for image to load to get proper dimensions
                                 if (!img.complete) {
@@ -124,13 +126,22 @@
                                     // Image is wider than 2:3
                                     container.classList.add('wide');
                                     
-                                    // Calculate pan distance based on image dimensions
-                                    const viewportWidth = 320;
-                                    const scaledImageWidth = (img.naturalWidth * 480) / img.naturalHeight;
-                                    const panDistance = -(scaledImageWidth - viewportWidth);
+                                    // Calculate the scaled dimensions when fitting height to viewport
+                                    const scaledHeight = viewportHeight * 1.1; // Account for scale(1.1)
+                                    const scaledWidth = (img.naturalWidth * scaledHeight) / img.naturalHeight;
                                     
-                                    // Set custom property for pan distance
-                                    container.style.setProperty('--pan-distance', `${panDistance}px`);
+                                    // Ensure the scaled width is always at least 10% wider than viewport
+                                    const minRequiredWidth = viewportWidth * 1.1;
+                                    const finalScaledWidth = Math.max(scaledWidth, minRequiredWidth);
+                                    
+                                    // Calculate the start position for panning
+                                    const panStart = `calc(-50% - ${(finalScaledWidth - viewportWidth) / 2}px)`;
+                                    
+                                    // Set the pan start position
+                                    container.style.setProperty('--pan-start', panStart);
+                                    
+                                    // Force immediate application of initial transform
+                                    img.style.transform = `translateX(-50%) scale(1.1)`;
                                 }
                             }
                         </script>
@@ -148,49 +159,81 @@
                         <!-- Rectangle 3 (51.43°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(51.43deg);">
-                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">3</div>
+                            <div class="image-container" id="img-container-3">
+                                <img src="images/Bob lecture.jpg" 
+                                     onload="setupImage(this)"
+                                     alt="Bob lecture">
+                            </div>
                         </div>
                         
                         <!-- Rectangle 4 (77.14°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(77.14deg);">
-                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">4</div>
+                            <div class="image-container" id="img-container-4">
+                                <img src="images/greg closeup lecture.jpg" 
+                                     onload="setupImage(this)"
+                                     alt="Greg closeup lecture">
+                            </div>
                         </div>
                         
                         <!-- Rectangle 5 (102.86°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(102.86deg);">
-                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">5</div>
+                            <div class="image-container" id="img-container-5">
+                                <img src="images/greg lecture närkesg.jpeg" 
+                                     onload="setupImage(this)"
+                                     alt="Greg lecture">
+                            </div>
                         </div>
                         
                         <!-- Rectangle 6 (128.57°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(128.57deg);">
-                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">6</div>
+                            <div class="image-container" id="img-container-6">
+                                <img src="images/greg skollecture hötorget.jpeg" 
+                                     onload="setupImage(this)"
+                                     alt="Greg school lecture">
+                            </div>
                         </div>
                         
                         <!-- Rectangle 7 (154.29°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(154.29deg);">
-                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">7</div>
+                            <div class="image-container" id="img-container-7">
+                                <img src="images/evenemäng at närkesgatan.jpeg" 
+                                     onload="setupImage(this)"
+                                     alt="Event at Narkesgatan">
+                            </div>
                         </div>
                         
                         <!-- Rectangle 8 (180°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(180deg);">
-                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">8</div>
+                            <div class="image-container" id="img-container-8">
+                                <img src="images/exterior skrapan.jpg" 
+                                     onload="setupImage(this)"
+                                     alt="Exterior Skrapan">
+                            </div>
                         </div>
                         
                         <!-- Rectangle 9 (205.71°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(205.71deg);">
-                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">9</div>
+                            <div class="image-container" id="img-container-9">
+                                <img src="images/interior skrappan.jpg" 
+                                     onload="setupImage(this)"
+                                     alt="Interior Skrapan">
+                            </div>
                         </div>
                         
                         <!-- Rectangle 10 (231.43°) -->
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(231.43deg);">
-                            <div class="w-full h-full bg-gradient-to-b from-white/50 to-white/20 backdrop-blur-sm flex items-center justify-center text-black text-6xl font-bold">10</div>
+                            <div class="image-container" id="img-container-10">
+                                <img src="images/invigning skrapan.jpeg" 
+                                     onload="setupImage(this)"
+                                     alt="Invigning Skrapan">
+                            </div>
                         </div>
                         
                         <!-- Rectangle 10 (257.14°) -->
