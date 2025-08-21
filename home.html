@@ -37,9 +37,9 @@
                 
                 <div class="hidden md:flex space-x-8">
                     <a href="#" class="nav-link font-medium text-gray-200 hover:text-white">Home</a>
-                    <a href="#" class="nav-link font-medium text-gray-200 hover:text-white">Exhibits</a>
+                    
                     <a href="#" class="nav-link font-medium text-gray-200 hover:text-white">Events</a>
-                    <a href="#" class="nav-link font-medium text-gray-200 hover:text-white">Research</a>
+                
                     <a href="#" class="nav-link font-medium text-gray-200 hover:text-white">About</a>
                 </div>
                 
@@ -55,19 +55,14 @@
     <section class="hero-bg min-h-screen flex items-center pt-16">
         <div class="container mx-auto px-4 py-20 flex flex-col items-center md:items-start md:flex-row">
             <div class="flex-1 text-center md:text-left">
-                <span class="bg-indigo-900 text-indigo-300 text-sm font-semibold px-4 py-1 rounded-full">Understand AI
-                </span>
+                
                 <h1 class="text-5xl md:text-7xl font-black tracking-tighter mt-6 mb-6">
-                    <span class="gradient-text">Museum of Artificial Intelligence</span>
+                    <div class="hero-card" style="background-image:url('page images/musikafton hötorget.jpg')"></div>
                 </h1>
                 <p class="text-xl text-slate-300 mb-10 max-w-3xl">
                     Explore the evolution, capabilities, and future of artificial intelligence at the world's first museum dedicated to  AI  and its impact on society. Located in the center of Stockholm.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-full font-bold text-lg transition duration-300 flex items-center justify-center">
-                        <i class="fa-solid fa-calendar mr-3"></i>
-                        Plan Your Visit
-                    </button>
+                
                 </div>
             </div>
             <div class="flex-1 flex justify-center mt-16 md:mt-0">
@@ -89,8 +84,10 @@
                 
                 <!-- Test rotating circles -->
                 <div id="test-circle" class="w-[640px] h-[640px] rounded-full relative">
-                    <!-- Base rotating circle with gradient -->
-                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-600 via-purple-500 to-indigo-600 test-rotation"></div>
+                    <!-- Base rotating image -->
+                    <div class="absolute inset-0 rounded-full overflow-hidden test-rotation">
+                        <img src="ChatGPT Image Apr 5, 2025, 07_39_47 PM.png" alt="Base rotating image" class="w-full h-full object-cover">
+                    </div>
                     
                     <!-- Counter-rotating circle with rectangles -->
                     <div class="absolute inset-0 rounded-full test-counter-rotation">
@@ -180,7 +177,7 @@
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(102.86deg);">
                             <div class="image-container" id="img-container-5">
-                                <img src="images/greg lecture närkesg.jpeg" 
+                                <img src="images/greg lecture närkesg-topaz-enhance-2x-faceai.jpeg" 
                                      onload="setupImage(this)"
                                      alt="Greg lecture">
                             </div>
@@ -210,7 +207,7 @@
                         <div class="rectangle-container absolute w-[320px] h-[480px] rounded-md overflow-hidden"
                              style="top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(180deg);">
                             <div class="image-container" id="img-container-8">
-                                <img src="images/exterior skrapan.jpg" 
+                                <img src="images/exterior skrapan-topaz-sharpen.jpg" 
                                      onload="setupImage(this)"
                                      alt="Exterior Skrapan">
                             </div>
@@ -301,8 +298,8 @@
                                     
                                     // Handle animations and visibility
                                     if (absAngle >= fullInvisibleAngle) {
-                                        // Completely invisible
-                                        container.style.opacity = '0';
+                                        // Background images - 40% opacity
+                                        container.style.opacity = '0.4';
                                         container.classList.remove('top-layer');
                                         imageContainer?.classList.remove('animate');
                                     } else if (absAngle <= fadeStartAngle) {
